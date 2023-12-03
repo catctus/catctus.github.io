@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-void printHelp();
 
+void printHelp();
 int fConvertMarkupToHml(char *sourcefile, char *outputfile);
 
 int main(int argc, char *argv[]) {
@@ -53,6 +53,7 @@ int fConvertMarkupToHml(char *sourceFilePath, char *outFilePath) {
   doc[fsize] = '\0';
   fclose(fp);
 
+  // do convert magic and dump to file
   convertMarkdownToHtml(doc, fsize, outFilePath);
 
   // free mem
@@ -61,6 +62,7 @@ int fConvertMarkupToHml(char *sourceFilePath, char *outFilePath) {
 
   return EXIT_SUCCESS;
 }
+
 void printHelp() {
   printf("------------------- BLOGGEN --------------------\n"
          "-h : help\n"

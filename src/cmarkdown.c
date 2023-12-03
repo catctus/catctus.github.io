@@ -1,17 +1,3 @@
-/*Markup converter
- *
- * we have two arrays, one with the raw markup and one
- * that is filled with information about the position.
- * The position array (struct*) will be filled by looking a head
- * where elements open and close.  So when we get there in the
- * char markup array we can make decisions if we need to add html,
- * skip the char or ignore mapping new values to the position/struct array.
- *
- * Should be relativly easy to add more advance and bespoke options to the
- * mapping. everything can be done in one go.
- *
- * */
-
 #include "cmarkdown.h"
 #include <malloc.h>
 #include <stdio.h>
@@ -41,11 +27,6 @@
 #define IGNORE_TOKEN -2 // ignore search
 #define KEEP_TOKEN -3   // keeps char for combo
 
-// -main data structure used
-// typeid is used for skips and to fill
-// a space in the map array.
-// - is allocted is used for clean up
-// - html is the char array that should be used
 typedef struct element {
   int typeId;
   int isAllocated;
@@ -65,11 +46,6 @@ void freeMap(element_t *map, int size) {
   free(map);
   map = NULL;
 }
-/* continue the search and check if we have more or
- * some specic char on a doc + offset position
- * can be used to find number of occurences
- * for example if there is 1 or 2 '*' in a row
- * */
 int getIntOfNeigbours(char *doc, char check, int offset) {
   int count = 0;
   doc += offset;
@@ -83,7 +59,8 @@ int getIntOfNeigbours(char *doc, char check, int offset) {
 /* Search string and count until we hit the next check */
 int getIntToNext(char *doc, char check, int offset) {
   int count = 0;
-  // WE NEED TO DO A CHECK HERE SO WE DON't RUN OUT!
+
+  // might have to do a check here..
   doc += offset;
   while (*doc != check && *doc != '\0') {
     doc++;
@@ -107,7 +84,6 @@ int getIntToNext(char *doc, char check, int offset) {
 #endif /* ifdef WARNING */
     return -1;
   }
-  // assert(*doc == '\0');
 
   return count;
 }
@@ -122,7 +98,6 @@ void mapToken(element_t *map, int startFrom, int numberOfSkips, int tokenType) {
 
 int isBeginningOfLine(char *doc, int pos) {
 
-  // do a check so we actually are at the beginning of a line
   if (pos > 0) {
     // move back one
     doc--;
@@ -180,9 +155,8 @@ void mapAsteriks(char *doc, element_t *map, int pos) {
   }
 }
 
-// this is from # to headers, h1 h2 h3 h4
-// we could add more so it goes up to 6. but 4 for now.
-// Could also allocate and just use the number..
+// TODO: just allocate and add number to str
+// remove the switch..
 void mapHeader(char *doc, element_t *map, int pos) {
 
   // check so we are at beginning of line else pass..
@@ -252,8 +226,8 @@ void mapCode(char *doc, element_t *map, int pos) {
   // we want to ignore and not map anything inside code
   mapToken(map, pos + 1 + numberOfSigns, length, IGNORE_TOKEN);
 
-  element_t codeOpen = {1, 0, "<code>"};
-  element_t codeClose = {1, 0, "</code>"};
+  element_t codeOpen = {1, 0, "<pre><code>"};
+  element_t codeClose = {1, 0, "</code></pre>"};
   map[pos] = codeOpen;
   map[pos + length + openCount] = codeClose;
 }
@@ -346,11 +320,8 @@ void mapImage(char *doc, element_t *map, int pos) {
   mapToken(map, pos + 1, linkTextLength + URLTextLength + 4, SKIP_TOKEN);
 }
 
-/*This will map the paragraph signs, it will look for a double
- * new line as for ending. The inbetween spaces will be set to
- * ignore, so we don't start looking for more paragraph starts
- * still needs to fix if for multiple spaces. else it will create
- * empty paragraphs..
+/* still needs to fix if for multiple spaces. else it will create
+ *  empty paragraphs..
  * */
 void mapParagraph(char *doc, element_t *map, int pos) {
 
