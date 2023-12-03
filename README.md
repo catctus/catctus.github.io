@@ -5,8 +5,7 @@ It converts markdown to html and includes some methods to combine header, footer
 list of all the blog posts. The goal was to create something to get more familiar with C and also have somewhere
 to blog and keep track of my journey. Not sure if it's ever going to be used / updated, but it was a fun exercise. 
 
-`bloggen -c /some/markdown.md /other/output.tml
- bloggen -u /some/folder/with/posts
- bloggen -h 
-`
+`bloggen -c /some/markdown.md /other/output.tml`
+`bloggen -u /some/folder/with/posts`
+`bloggen -h` 
 
