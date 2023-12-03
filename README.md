@@ -1,4 +1,4 @@
-** [www.catctus.github.io](https://www.catctus.github.io)**
+# [www.catctus.github.io](https://www.catctus.github.io)
 
 My little blog, website and also my first C project. A static website generator called blog-gen. 
 It converts markdown to html and includes some methods to combine header, footer and update a 
