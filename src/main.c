@@ -132,7 +132,7 @@ int updateBlog() {
     // if we are the end of the posts do this
     if (previousPost != NULL && headCpy->nxtPtr == NULL) {
       char *linkHtml = NULL;
-      char *start = "<a href=\"./pages/posts/";
+      char *start = "<a href=\"./";
       char *end = "\"> <i class=\"bi bi-arrow-left-square\"> Previous </i></a>";
       linkHtml = (char *)malloc(strlen(start) + strlen(end) +
                                 strlen(previousPost->data) + 10);
@@ -149,7 +149,7 @@ int updateBlog() {
       linkHtml = NULL;
     } else if (previousPost == NULL && headCpy->nxtPtr != NULL) {
       char *linkHtml = NULL;
-      char *start = "<a href=\"./pages/posts/";
+      char *start = "<a href=\"./";
       char *end = "\"> Next <i class=\"bi bi-arrow-right-square\"></i></a>";
       linkHtml = (char *)malloc(strlen(start) + strlen(end) +
                                 strlen(headCpy->nxtPtr->data) + 10);
@@ -167,7 +167,7 @@ int updateBlog() {
       linkHtml = NULL;
     } else if (previousPost != NULL && headCpy->nxtPtr != NULL) {
       char *linkHtml = NULL;
-      char *start = "<a href=\"./pages/posts/";
+      char *start = "<a href=\"./";
       char *endPrev =
           "\"><i class=\"bi bi-arrow-left-square\"> Previous</i></a>";
       char *endNext =
