@@ -1,6 +1,6 @@
 
-SRC = cmarkdown.c main.c 
-OBJ = cmarkdown.o main.o 
+SRC = cmarkdown.c filelist.c main.c 
+OBJ = cmarkdown.o filelist.o main.o 
 
 PROG = bloggen
 $(PROG):$(OBJ)

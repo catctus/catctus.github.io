@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #ifdef __STDC_ALLOC_LIB__
 #define __STDC_WANT_LIB_EXT2__ 1
@@ -26,12 +27,6 @@
 #define SKIP_TOKEN -1   // removes char
 #define IGNORE_TOKEN -2 // ignore search
 #define KEEP_TOKEN -3   // keeps char for combo
-
-typedef struct element {
-  int typeId;
-  int isAllocated;
-  char *html;
-} element_t;
 
 /*  some utility functions */
 
@@ -417,6 +412,11 @@ int convertMarkdownToHtml(char *doc, int fsize, char *outpath) {
     pos++;
     doc++;
   }
+  // get time
+  time_t t = time(NULL);
+  struct tm tm = *localtime(&t);
+  fprintf(htmlFileOut, "<br>\n<em>touched:%d-%02d-%02d</em>\n",
+          tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
   // back it
   doc -= fsize;
 
@@ -426,3 +426,5 @@ int convertMarkdownToHtml(char *doc, int fsize, char *outpath) {
 
   return EXIT_SUCCESS;
 }
+
+// starting_from_c_post_1.md
