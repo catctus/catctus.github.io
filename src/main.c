@@ -133,7 +133,7 @@ int updateBlog() {
     if (previousPost != NULL && headCpy->nxtPtr == NULL) {
       char *linkHtml = NULL;
       char *start = "<a href=\"./";
-      char *end = "\"> <i class=\"bi bi-arrow-left-square\"> Previous </i></a>";
+      char *end = "\"> Next <i class=\"bi bi-arrow-right-square\"></i></a>";
       linkHtml = (char *)malloc(strlen(start) + strlen(end) +
                                 strlen(previousPost->data) + 10);
       strcpy(linkHtml, start);
@@ -150,7 +150,7 @@ int updateBlog() {
     } else if (previousPost == NULL && headCpy->nxtPtr != NULL) {
       char *linkHtml = NULL;
       char *start = "<a href=\"./";
-      char *end = "\"> Next <i class=\"bi bi-arrow-right-square\"></i></a>";
+      char *end = "\"> <i class=\"bi bi-arrow-left-square\"> Previous </i></a>";
       linkHtml = (char *)malloc(strlen(start) + strlen(end) +
                                 strlen(headCpy->nxtPtr->data) + 10);
       strcpy(linkHtml, start);
@@ -169,24 +169,13 @@ int updateBlog() {
       char *linkHtml = NULL;
       char *start = "<a href=\"./";
       char *endPrev =
-          "\"><i class=\"bi bi-arrow-left-square\"> Previous</i></a>";
-      char *endNext =
-          "\"> & Next <i class=\"bi bi-arrow-right-square\"></i></a>";
+          "\"><i class=\"bi bi-arrow-left-square\"> Previous</i></a> & ";
+      char *endNext = "\"> Next <i class=\"bi bi-arrow-right-square\"></i></a>";
       linkHtml = (char *)malloc(
           strlen(start) + strlen(endPrev) + strlen(start) + strlen(endNext) +
           strlen(headCpy->nxtPtr->data) + strlen(previousPost->data) + 10);
 
       strcpy(linkHtml, start);
-      if (string_ends_with(previousPost->data, ".md")) {
-        strncat(linkHtml, previousPost->data, strlen(previousPost->data) - 3);
-        strcat(linkHtml, ".html");
-      } else {
-        strcat(linkHtml, previousPost->data);
-      }
-      strcat(linkHtml, endPrev);
-
-      strcpy(linkHtml, start);
-
       if (string_ends_with(headCpy->nxtPtr->data, ".md")) {
         strncat(linkHtml, headCpy->nxtPtr->data,
                 strlen(headCpy->nxtPtr->data) - 3);
@@ -194,6 +183,16 @@ int updateBlog() {
       } else {
         strcat(linkHtml, headCpy->nxtPtr->data);
       }
+      strcat(linkHtml, endPrev);
+
+      strcat(linkHtml, start);
+      if (string_ends_with(previousPost->data, ".md")) {
+        strncat(linkHtml, previousPost->data, strlen(previousPost->data) - 3);
+        strcat(linkHtml, ".html");
+      } else {
+        strcat(linkHtml, previousPost->data);
+      }
+
       strcat(linkHtml, endNext);
       fputs(linkHtml, fOutPost);
       free(linkHtml);
@@ -238,12 +237,14 @@ int updateHomePageNavigation(ListNodePtr head) {
 
   char *linkHtml = NULL;
   char *linkImg = NULL;
+  char *linkTxt = NULL;
 
   while (currentPtr != NULL) {
     fputs("\n<div class=\"col\"><a href=\"/pages/posts", fIndexOut);
 
     linkHtml = (char *)malloc(strlen(currentPtr->data) + 10);
     linkImg = (char *)malloc(strlen(currentPtr->data) + 10);
+    linkTxt = (char *)malloc(strlen(currentPtr->data) + 10);
 
     // this is just to make things easier not having to add nullz
     strcpy(linkHtml, "/");
@@ -256,13 +257,20 @@ int updateHomePageNavigation(ListNodePtr head) {
       strncat(linkImg, currentPtr->data, strlen(currentPtr->data) - 3);
       strcat(linkImg, ".jpeg");
 
+      strncpy(linkTxt, currentPtr->data, strlen(currentPtr->data) - 3);
+      linkTxt[strlen(currentPtr->data) - 3] = '\0';
+
     } else {
       strcpy(linkHtml, currentPtr->data);
       strcpy(linkImg, currentPtr->data);
+      strcpy(linkTxt, currentPtr->data);
+      linkTxt[strlen(currentPtr->data) + 1] = '\0';
       strcat(linkImg, ".jpeg");
     }
     fputs(linkHtml, fIndexOut);
-    fputs("\"><img src=\"/resource", fIndexOut);
+    fputs("\">", fIndexOut);
+    fputs(linkTxt, fIndexOut);
+    fputs("<img src=\"/resource", fIndexOut);
     fputs(linkImg, fIndexOut);
     fputs("\" class=\"rounded img-thumbnail\"></a></div>", fIndexOut);
 
@@ -270,6 +278,8 @@ int updateHomePageNavigation(ListNodePtr head) {
     linkHtml = NULL;
     free(linkImg);
     linkImg = NULL;
+    free(linkTxt);
+    linkTxt = NULL;
 
     currentPtr = currentPtr->nxtPtr;
   }

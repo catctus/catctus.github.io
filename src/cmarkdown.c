@@ -412,12 +412,12 @@ int convertMarkdownToHtml(char *doc, int fsize, char *outpath) {
     pos++;
     doc++;
   }
-  // get time
-  time_t t = time(NULL);
-  struct tm tm = *localtime(&t);
-  fprintf(htmlFileOut, "<br>\n<em>touched:%d-%02d-%02d</em>\n",
-          tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
-  // back it
+  // // get time
+  // time_t t = time(NULL);
+  // struct tm tm = *localtime(&t);
+  // fprintf(htmlFileOut, "<br>\n<em>touched:%d-%02d-%02d</em>\n",
+  //         tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
+  // // back it
   doc -= fsize;
 
   // free memoery and close file

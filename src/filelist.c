@@ -26,12 +26,12 @@ void insert(ListNodePtr *head, char *value) {
   if (currentPtr != NULL) {
     int checkInt = 0;
     checkInt = atoi(currentPtr->data);
-    if (checkInt > intVal) {
+    if (checkInt < intVal) {
       insertAtStart(head, value);
     } else {
       while (currentPtr->nxtPtr != NULL) {
         checkInt = atoi(currentPtr->nxtPtr->data);
-        if (checkInt > intVal) {
+        if (checkInt < intVal) {
           int len = strlen(value);
           ListNodePtr storePtr = currentPtr->nxtPtr;
           currentPtr->nxtPtr = NULL;
