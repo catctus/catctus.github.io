@@ -7,7 +7,7 @@ to blog and keep track of my journey. Not sure if it's ever going to be used / u
 
 `bloggen -c /some/markdown.md /other/output.tml`
 
-`bloggen -u /some/folder/with/posts`
+`bloggen -u`
 
 `bloggen -h` 
 
