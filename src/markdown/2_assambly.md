@@ -6,8 +6,7 @@ A few years ago I did a MOOC course called *nand to tetris*, which was a really 
 from scratch. Building up ram and the processor from simple nand gates.
 So a lot of things covered in this Atari 
 
-`
-; 8086
+`; 8086
 org 100h
 
 jmp main
